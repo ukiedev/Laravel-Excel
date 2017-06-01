@@ -572,7 +572,7 @@ class Html extends PHPExcel_Reader_HTML {
                         break;
 
                     case 'img':
-                        $this->insertImageBySrc($sheet, $column, $row, $child);
+//                        $this->insertImageBySrc($sheet, $column, $row, $child);
                         break;
 
                     // Table rows
