@@ -757,7 +757,7 @@ class Html extends PHPExcel_Reader_HTML {
         $drawing = new PHPExcel_Worksheet_Drawing();
 
         // Set image
-        $drawing->setPath($src);
+//        $drawing->setPath($src);
         $drawing->setName($alt);
         $drawing->setWorksheet($sheet);
         $drawing->setCoordinates($column . $row);
