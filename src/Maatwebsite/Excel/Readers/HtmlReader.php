@@ -385,10 +385,6 @@ class Html extends PHPExcel_Reader_HTML {
                         // Continue processing
                         $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
 
-                        // Add space after empty cells
-                        if ( $cellContent > '' )
-                            $cellContent .= ' ';
-
                         // Set the styling
                         if ( isset($this->_formats[$child->nodeName]) )
                         {
