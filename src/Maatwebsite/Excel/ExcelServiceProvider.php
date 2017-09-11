@@ -80,19 +80,19 @@ class ExcelServiceProvider extends ServiceProvider {
         $me = $this;
 
         // Bind the PHPExcel class
-        $this->app['phpexcel'] = $this->app->share(function () use ($me)
-        {
-            // Set locale
-            $me->setLocale();
+	    $this->app->singleton('phpexcel', function () use ($me) {
 
-            // Set the caching settings
-            $me->setCacheSettings();
+		    // Set locale
+		    $me->setLocale();
 
-            // Init phpExcel
-            $excel = new PHPExcel();
-            $excel->setDefaultProperties();
-            return $excel;
-        });
+		    // Set the caching settings
+		    $me->setCacheSettings();
+
+		    // Init phpExcel
+		    $excel = new PHPExcel();
+		    $excel->setDefaultProperties();
+		    return $excel;
+	    });
     }
 
     /**
@@ -101,8 +101,7 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindCssParser()
     {
         // Bind css parser
-        $this->app['excel.parsers.css'] = $this->app->share(function ()
-        {
+        $this->app->singleton('excel.parsers.css', function () {
             return new CssParser(
                 new CssToInlineStyles()
             );
@@ -116,7 +115,7 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindReaders()
     {
         // Bind the laravel excel reader
-        $this->app['excel.reader'] = $this->app->share(function ($app)
+        $this->app->singleton('excel.reader', function ($app)
         {
             return new LaravelExcelReader(
                 $app['files'],
@@ -126,7 +125,7 @@ class ExcelServiceProvider extends ServiceProvider {
         });
 
         // Bind the html reader class
-        $this->app['excel.readers.html'] = $this->app->share(function ($app)
+        $this->app->singleton('excel.readers.html', function ($app)
         {
             return new Html(
                 $app['excel.parsers.css']
@@ -141,7 +140,7 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindParsers()
     {
         // Bind the view parser
-        $this->app['excel.parsers.view'] = $this->app->share(function ($app)
+        $this->app->singleton('excel.parsers.view', function ($app)
         {
             return new ViewParser(
                 $app['excel.readers.html']
@@ -156,7 +155,7 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindWriters()
     {
         // Bind the excel writer
-        $this->app['excel.writer'] = $this->app->share(function ($app)
+        $this->app->singleton('excel.writer', function ($app)
         {
             return new LaravelExcelWriter(
                 $app->make(Response::class),
@@ -173,7 +172,7 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindExcel()
     {
         // Bind the Excel class and inject its dependencies
-        $this->app['excel'] = $this->app->share(function ($app)
+        $this->app->singleton('excel', function ($app)
         {
             $excel = new Excel(
                 $app['phpexcel'],
@@ -186,7 +185,7 @@ class ExcelServiceProvider extends ServiceProvider {
 
             return $excel;
         });
-        
+
         $this->app->alias('phpexcel', PHPExcel::class);
     }
 
@@ -197,7 +196,7 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindClasses()
     {
         // Bind the format identifier
-        $this->app['excel.identifier'] = $this->app->share(function ($app)
+        $this->app->singleton('excel.identifier', function ($app)
         {
             return new FormatIdentifier($app['files']);
         });
