@@ -823,6 +823,8 @@ class Html extends PHPExcel_Reader_HTML {
      */
     protected function parseColSpan($sheet, $column, $row, $spanWidth, $attributes)
     {
+		$spanWidth = (int) trim($spanWidth);
+
         $startCell = $column . $row;
 
         $this->spanWidth = $spanWidth;
